@@ -4,7 +4,6 @@ from flask import jsonify, request, abort
 from api.v1.views import app_views
 from models.place import Place
 from models import storage
-from werkzeug.exceptions import BadRequest
 
 
 @app_views.route("/cities/<city_id>/places", methods=["GET", "POST"])
