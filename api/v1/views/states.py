@@ -11,8 +11,8 @@ from werkzeug.exceptions import BadRequest
 def states():
     """Retrives the list of all State objects during GET Method"""
     if request.method == 'GET':
-        states = storage.all(State)
-        states_list = [state.to_dict() for state in states.values()]
+        states = storage.all(State).values()
+        states_list = [state.to_dict() for state in states]
         return jsonify(states_list)
 
     if request.method == 'POST':
@@ -32,17 +32,21 @@ def states():
 def state_id(state_id):
     """Retrieves a State object during GET Method"""
     obj = storage.get(State, state_id)
-    if not obj:
-        abort(404)
     if request.method == 'GET':
+        if not obj:
+            abort(404)
         return jsonify(obj.to_dict())
 
     if request.method == 'DELETE':
+        if not obj:
+            abort(404)
         storage.delete(obj)
         storage.save()
         return {}, 200
 
     if request.method == 'PUT':
+        if not obj:
+            abort(404)
         try:
             data = request.get_json()
         except BadRequest:
