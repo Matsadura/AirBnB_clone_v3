@@ -14,9 +14,8 @@ def users():
         return jsonify([user.to_dict() for user in users])
 
     if request.method == 'POST':
-        try:
-            data = request.get_json()
-        except Exception as e:
+        data = request.get_json(silent=True)
+        if not data:
             abort(400, 'Not a JSON')
         if 'email' not in data.keys():
             abort(400, 'Missing email')
@@ -48,9 +47,9 @@ def user_id(user_id):
     if request.method == 'PUT':
         if not obj:
             abort(404)
-        try:
-            data = request.get_json()
-        except Exception as e:
+
+        data = request.get_json(silent=True)
+        if not data:
             abort(400, 'Not a JSON')
         skippable = ['id', 'email', 'created_at', 'updated_at']
         for k, v in data.items():
