@@ -12,7 +12,7 @@ def places(city_id):
     """ handles request made to places api """
     if request.method == 'GET':
         city = storage.get("City", str(city_id))
-        if city is Noine:
+        if city is None:
             abort(404)
         places_list = [place.to_dict() for place in city.places]
         return jsonify(places_list)
@@ -41,7 +41,7 @@ def places_by_id(place_id):
     """ Gets a specific place by its id """
     if request.method == 'GET':
         place = storage.get("Place", str(place_id))
-        if place in None:
+        if place is None:
             abort(404)
             return jsonify(place.to_dict())
     elif request.method == 'DELETE':
