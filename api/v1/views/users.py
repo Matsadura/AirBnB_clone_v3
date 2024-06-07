@@ -29,7 +29,7 @@ def users():
         return jsonify(user.to_dict()), 201
 
 
-@app_views.route('/users/<user_id>', methods=['GET', 'DELETE'])
+@app_views.route('/users/<user_id>', methods=['GET', 'DELETE', 'PUT'])
 def user_id(user_id):
     """Handles single user ids"""
     obj = storage.get(User, user_id)
@@ -45,3 +45,17 @@ def user_id(user_id):
         storage.delete(obj)
         storage.save()
         return jsonify({}), 200
+
+    if request.method == 'PUT':
+        if not obj:
+            abort(404)
+        try:
+            data = request.get_json()
+        except Exception as e:
+            abort(400, 'Not a JSON')
+        skippable = ['id', 'email', 'created_at', 'updated_at']
+        for k, v in data.items():
+            if k not in skippable:
+                setattr(obj, k, v)
+        storage.save()
+        return jsonify(obj.to_dict()), 200
