@@ -5,7 +5,6 @@ from models.state import State
 from models.city import City
 from models import storage
 from flask import jsonify, request, abort
-from werkzeug.exceptions import BadRequest
 
 
 @app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'])
@@ -27,7 +26,7 @@ def cities(city_id):
     if request.method == 'PUT':
         try:
             data = request.get_json()
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
         skippable = ['id', 'created_at', 'updated_at']
         for k, v in data.items():
@@ -52,7 +51,7 @@ def state_id_cities(state_id):
         try:
             data = request.get_json()
             data['state_id'] = state_id
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
         if 'name' not in data.keys():
             abort(400, 'Missing name')
