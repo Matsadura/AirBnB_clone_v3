@@ -5,8 +5,14 @@ from api.v1.views import app_views
 
 @app_views.route('/status')
 def status():
-    """ Returns the api status """
-    return {"Status": "OK"}
+    """ Returns the api status all wrapped in a json object """
+
+    data = {
+            "status": "OK"
+            }
+    resp = jsonify(data)
+    resp.status_code = 200
+    return resp
 
 
 @app_views.route('/stats')
