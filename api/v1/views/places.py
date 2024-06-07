@@ -12,7 +12,7 @@ def places(city_id):
     """ handles request made to places api """
     if request.method == 'GET':
         city = storage.get("City", str(city_id))
-        if city is None:
+        if city is Noine:
             abort(404)
         places_list = [place.to_dict() for place in city.places]
         return jsonify(places_list)
@@ -22,15 +22,15 @@ def places(city_id):
             abort(400, 'Not a JSON')
         if not storage.get("City", str(city_id)):
             abort(404)
-        if not storage.get("User", place_json["user_id"]):
-            abort(404)
         if "user_id" not in place_json:
             abort(400, 'Missing user_id')
         if "name" not in place_json:
             abort(400, 'Missing name')
+        if not storage.get("User", place_json["user_id"]):
+            abort(404)
 
         place_json["city_id"] = city_id
-        new_place = place(**place_json)
+        new_place = Place(**place_json)
         new_place.save()
 
         return jsonify(new_place.to_dict()), 201
@@ -46,7 +46,7 @@ def places_by_id(place_id):
             return jsonify(place.to_dict())
     elif request.method == 'DELETE':
         place = storage.get("Place", str(place_id))
-        if place in None:
+        if place is None:
             abort(404)
         storage.delete(place)
         storage.save()
