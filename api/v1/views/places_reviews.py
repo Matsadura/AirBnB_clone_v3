@@ -62,4 +62,4 @@ def review_id(review_id):
             if k not in skippable:
                 setattr(obj, k, v)
         storage.save()
-        return (obj.to_dict())
+        return jsonify(obj.to_dict()), 200
