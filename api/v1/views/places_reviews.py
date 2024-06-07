@@ -18,8 +18,9 @@ def review_of_a_place(place_id):
         return jsonify([review.to_dict() for review in place.reviews])
 
     if request.method == 'POST':
-        data = request.get_json(silent=True)
-        if not data:
+        try:
+            data = request.get_json()
+        except Exception as e:
             abort(400, 'Not a JSON')
         if 'user_id' not in data.keys():
             abort(400, 'Missing user_id')
@@ -54,8 +55,9 @@ def review_id(review_id):
     if request.method == 'PUT':
         if not obj:
             abort(404)
-        data = request.get_json(silent=True)
-        if not data:
+        try:
+            data = request.get_json()
+        except Exception as e:
             abort(400, 'Not a JSON')
         skippable = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
         for k, v in data.items():
