@@ -12,6 +12,11 @@ app.register_blueprint(app_views)
 HOST = "0.0.0.0"
 PORT = 5000
 
+if getenv("HBNB_API_HOST"):
+    HOST = getenv("HBNB_API_HOST")
+if getenv("HBNB_API_PORT"):
+    PORT = getenv("HBNB_API_PORT")
+
 
 @app.teardown_appcontext
 def teardown_db(exception):
@@ -26,8 +31,4 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    if getenv("HBNB_API_HOST"):
-        HOST = getenv("HBNB_API_HOST")
-    if getenv("HBNB_API_PORT"):
-        PORT = getenv("HBNB_API_PORT")
     app.run(host=HOST, port=PORT, threaded=True)
