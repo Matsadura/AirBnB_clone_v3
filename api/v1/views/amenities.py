@@ -4,7 +4,6 @@ from api.v1.views import app_views
 from models.amenity import Amenity
 from models import storage
 from flask import jsonify, request, abort
-from werkzeug.exceptions import BadRequest
 
 
 @app_views.route('/amenities', methods=['GET', 'POST'])
@@ -19,7 +18,7 @@ def amenities():
     if request.method == 'POST':
         try:
             data = request.get_json()
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
     if 'name' not in data.keys():
         abort(400, 'Missing name')
@@ -42,7 +41,7 @@ def amenity_id(amenity_id):
     if request.method == 'PUT':
         try:
             data = request.get_json()
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
         skippable = ['id', 'created_at', 'updated_at']
         for k, v in data.items():
