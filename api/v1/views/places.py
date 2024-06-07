@@ -43,7 +43,7 @@ def places_by_id(place_id):
         place = storage.get("Place", str(place_id))
         if place is None:
             abort(404)
-            return jsonify(place.to_dict())
+        return jsonify(place.to_dict())
     elif request.method == 'DELETE':
         place = storage.get("Place", str(place_id))
         if place is None:
@@ -55,7 +55,7 @@ def places_by_id(place_id):
         place_json = request.get_json(silent=True)
 
         if place_json is None:
-            abort(404)
+            abort(400, 'Not a JSON')
 
         place = storage.get("Place", str(place_id))
         if place is None:
