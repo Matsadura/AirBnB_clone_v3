@@ -6,7 +6,7 @@ from models import storage
 from flask import jsonify, request, abort
 
 
-@app_views.route('/amenities', methods=['GET', 'POST', 'DELETE'])
+@app_views.route('/amenities', methods=['GET', 'POST'])
 def amenities():
     """Retrieves all Amenity objects in GET request"""
     amenities = storage.all(Amenity).values()
@@ -28,7 +28,7 @@ def amenities():
         return jsonify(obj.to_dict()), 201
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT', 'DELETE'])
 def amenity_id(amenity_id):
     """Retrieve an Amenity object in GET Request"""
     obj = storage.get(Amenity, amenity_id)
