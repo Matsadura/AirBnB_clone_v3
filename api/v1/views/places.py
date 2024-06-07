@@ -6,6 +6,7 @@ from models.place import Place
 from models import storage
 from werkzeug.exceptions import BadRequest
 
+
 @app_views.route("/cities/<city_id>/places", methods=["GET", "POST"])
 def places(city_id):
     """ handles request made to places api """
@@ -59,12 +60,11 @@ def places_by_id(place_id):
         place = storage.get("Place", str(place_id))
         if place is None:
             abort(404)
+        skippable = ["id", "created_at", "updated_at", "user_id", "city_id"]
 
         for key, value in place_json.items():
-            if key not in ["id", "created_at", "updated_at", "user_id", "city_id"]:
+            if key not in skippable:
                 setattr(place, key, value)
 
         place.save()
         return jsonify(place.to_dict())
-
-
