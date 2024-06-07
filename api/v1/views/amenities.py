@@ -36,7 +36,7 @@ def amenity_id(amenity_id):
     if request.method == 'GET':
         if not obj:
             abort(404)
-        return jsonify(obj.to_dict()), 200
+        return jsonify(obj.to_dict())
 
     if request.method == 'PUT':
         if not obj:
