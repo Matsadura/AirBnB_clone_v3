@@ -32,13 +32,15 @@ def amenities():
 def amenity_id(amenity_id):
     """Retrieve an Amenity object in GET Request"""
     obj = storage.get(Amenity, amenity_id)
-    if not obj:
-        abort(404)
 
     if request.method == 'GET':
+        if not obj:
+            abort(404)
         return jsonify(obj.to_dict()), 200
 
     if request.method == 'PUT':
+        if not obj:
+            abort(404)
         try:
             data = request.get_json()
         except Exception as e:
