@@ -6,7 +6,7 @@ from models import storage
 from flask import jsonify, request, abort
 
 
-@app_views.route('/amenities', methods=['GET', 'POST'])
+@app_views.route('/amenities', methods=['GET', 'POST', 'DELETE'])
 def amenities():
     """Retrieves all Amenity objects in GET request"""
     amenities = storage.all(Amenity).values()
@@ -20,12 +20,12 @@ def amenities():
             data = request.get_json()
         except Exception as e:
             abort(400, 'Not a JSON')
-    if 'name' not in data.keys():
-        abort(400, 'Missing name')
-    obj = Amenity(**data)
-    storage.new(obj)
-    storage.save()
-    return jsonify(obj.to_dict()), 201
+        if 'name' not in data.keys():
+            abort(400, 'Missing name')
+        obj = Amenity(**data)
+        storage.new(obj)
+        storage.save()
+        return jsonify(obj.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET', 'PUT'])
@@ -51,3 +51,10 @@ def amenity_id(amenity_id):
                 setattr(obj, k, v)
         storage.save()
         return jsonify(obj.to_dict()), 200
+
+    if request.method == 'DELETE':
+        if not obj:
+            abort(404)
+        storage.delete(obj)
+        storage.save()
+        return jsonify({}), 200
