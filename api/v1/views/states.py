@@ -18,7 +18,7 @@ def states():
     if request.method == 'POST':
         try:
             data = request.get_json()
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
         if 'name' not in data.keys():
             abort(400, 'Missing name')
@@ -49,7 +49,7 @@ def state_id(state_id):
             abort(404)
         try:
             data = request.get_json()
-        except BadRequest:
+        except Exception as e:
             abort(400, 'Not a JSON')
         skippable = ['id', 'created_at', 'updated_at']
         for k, v in data.items():
