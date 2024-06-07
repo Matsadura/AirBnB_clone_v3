@@ -9,9 +9,8 @@ from flask import jsonify, request, abort
 @app_views.route('/users', methods=['GET', 'POST'])
 def users():
     """Handles the users view"""
-    users = storage.all(User).values()
-
     if request.method == 'GET':
+        users = storage.all(User).values()
         return jsonify([user.to_dict() for user in users])
 
     if request.method == 'POST':
