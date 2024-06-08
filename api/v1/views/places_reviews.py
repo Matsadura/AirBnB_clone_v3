@@ -32,6 +32,9 @@ def review_of_a_place(place_id):
         if not storage.get(Place, place_id):
             abort(404)
 
+        # In case the place_id is not included in the request body
+        data['place_id'] = place_id
+
         review = Review(**data)
         storage.new(review)
         storage.save()
