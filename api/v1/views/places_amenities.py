@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 """A view for Amenity objects with link to Places objects"""
-from flask import jsonify, abort
+from flask import jsonify, abort, request
 from models import storage
 from api.v1.views import app_views
 from os import getenv
+from models.place import Place
+from models.amenity import Amenity
 
 
 @app_views.route("/places/<place_id>/amenities", methods=["GET"])
@@ -14,7 +16,7 @@ def amenity_of_place(place_id):
     if obj is None:
         abort(404)
 
-    amenities = [amenity, to_dict() for amenity in obj.amenities]
+    amenities = [amenity.to_dict() for amenity in obj.amenities]
     return jsonify(amenities)
 
 
@@ -28,7 +30,7 @@ def remove_amenity_from_place(place_id, amenity_id):
     if not storage.get(Amenity, amenity_id):
         abort(404)
 
-    if request.method == 'GET':
+    if request.method == 'DELETE':
         objects = storage.get(Place, place_id)
         flag = 0
 
@@ -45,7 +47,7 @@ def remove_amenity_from_place(place_id, amenity_id):
         if flag == 0:
             abort(404)
         else:
-            return jsonify({}), 201
+            return jsonify({}), 200
 
     elif request.method == 'POST':
         place_obj = storage.get(Place, place_id)
