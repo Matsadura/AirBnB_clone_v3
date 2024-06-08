@@ -28,6 +28,10 @@ def review_of_a_place(place_id):
             abort(404)
         if 'text' not in data.keys():
             abort(400, 'Missing text')
+
+        if not storage.get(Place, place_id):
+            abort(404)
+
         review = Review(**data)
         storage.new(review)
         storage.save()
