@@ -149,6 +149,107 @@ EOF  all  create  destroy  help  quit  show  update
 ** no instance found **
 (hbnb) quit
 ```
+Apologies for the oversight. Here's the markdown code for all the new implementations:
+
+```markdown
+## New Implementations
+
+### 1. Never fail!
+We have added extensive unit tests to ensure all functionalities work as expected. All current tests must pass, and additional tests have been included to cover new features. You can run the tests with the following commands:
+
+```bash
+python3 -m unittest discover tests 2>&1 | tail -1
+OK
+
+HBNB_ENV=test HBNB_MYSQL_USER=hbnb_test HBNB_MYSQL_PWD=hbnb_test_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_test_db HBNB_TYPE_STORAGE=db python3 -m unittest discover tests 2>&1 /dev/null | tail -n 1
+OK
+```
+
+### 2. Improve storage
+Two new methods have been added to both `DBStorage` and `FileStorage` classes:
+
+- `get(self, cls, id)`: Retrieves an object based on its class and ID.
+- `count(self, cls=None)`: Counts the number of objects in storage. If no class is specified, it returns the count of all objects.
+
+You can test these methods with the following script:
+
+```python
+#!/usr/bin/python3
+""" Test .get() and .count() methods """
+from models import storage
+from models.state import State
+
+print("All objects: {}".format(storage.count()))
+print("State objects: {}".format(storage.count(State)))
+
+first_state_id = list(storage.all(State).values())[0].id
+print("First state: {}".format(storage.get(State, first_state_id)))
+```
+
+### 3. Status of your API
+A new endpoint has been created to return the status of your API. Start your Flask server with:
+
+```bash
+HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db HBNB_API_HOST=0.0.0.0 HBNB_API_PORT=5000 python3 -m api.v1.app
+```
+
+Then, in another terminal, check the status with:
+
+```bash
+curl -X GET http://0.0.0.0:5000/api/v1/status
+```
+
+The expected output is:
+
+```json
+{
+  "status": "OK"
+}
+```
+
+### 4. Some stats?
+An endpoint has been added to retrieve the number of each object type. Use the following route:
+
+```bash
+curl -X GET http://0.0.0.0:5000/api/v1/stats
+```
+
+The expected output is a JSON with the count of each object type, like:
+
+```json
+{
+  "amenities": 47, 
+  "cities": 36, 
+  "places": 154, 
+  "reviews": 718, 
+  "states": 27, 
+  "users": 31
+}
+```
+
+### 5. Not found
+A handler for 404 errors has been created that returns a JSON-formatted 404 status code response. The content should be:
+
+```json
+{
+  "error": "Not found"
+}
+```
+
+To test, run:
+
+```bash
+curl -X GET http://0.0.0.0:5000/api/v1/nop
+```
+
+The expected output is:
+
+```json
+{
+  "error": "Not found"
+}
+```
+```
 
 ## Bugs
 No known bugs at this time. 
