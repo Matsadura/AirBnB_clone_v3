@@ -126,7 +126,7 @@ TestBaseModel class:
 * `def test_user_module_docstring(self)` - Test for the user.py module docstring
 * `def test_user_class_docstring(self)` - Test for the User class docstring
 
-#### New Implementations
+## New Implementations
 
 ### 1. Never fail!
 We have added extensive unit tests to ensure all functionalities work as expected.
@@ -146,6 +146,78 @@ An endpoint has been added to retrieve the number of each object type:
 
 ### 5. Not found
 A handler for 404 errors has been created that returns a JSON-formatted 404 status code response.
+
+### 6. State
+Create a new view for State objects that handles all default RESTFul API actions.
+- `File`: api/v1/views/states.py
+Utilize to_dict() to retrieve an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+Retrieves the list of all State objects: GET /api/v1/states
+`Retrieves a State object`: GET /api/v1/states/<state_id>
+`Deletes a State object`: DELETE /api/v1/states/<state_id>
+`Creates a State`: POST /api/v1/states
+`Updates a State object`: PUT /api/v1/states/<state_id>
+### 7. City
+Create a new view for City objects that handles all default RESTFul API actions.
+`File`: api/v1/views/cities.py
+Utilize to_dict() to serialize an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+Retrieves the list of all City objects of a State: GET /api/v1/states/<state_id>/cities
+`Retrieves a City object`: GET /api/v1/cities/<city_id>
+`Deletes a City object`: DELETE /api/v1/cities/<city_id>
+`Creates a City`: POST /api/v1/states/<state_id>/cities
+`Updates a City object`: PUT /api/v1/cities/<city_id>
+### 8. Amenity
+Create a new view for Amenity objects that handles all default RESTFul API actions.
+File: api/v1/views/amenities.py
+Utilize to_dict() to serialize an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+Retrieves the list of all Amenity objects: GET /api/v1/amenities
+`Retrieves an Amenity object`: GET /api/v1/amenities/<amenity_id>
+`Deletes an Amenity object`: DELETE /api/v1/amenities/<amenity_id>
+`Creates an Amenity`: POST /api/v1/amenities
+`Updates an Amenity object`: PUT /api/v1/amenities/<amenity_id>
+### 9. User
+Create a new view for User objects that handles all default RESTFul API actions.
+File: api/v1/views/users.py
+Utilize to_dict() to retrieve an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+Retrieves the list of all User objects: GET /api/v1/users
+`Retrieves a User object`: GET /api/v1/users/<user_id>
+`Deletes a User object`: DELETE /api/v1/users/<user_id>
+`Creates a User`: POST /api/v1/users
+`Updates a User object`: PUT /api/v1/users/<user_id>
+### 10. Place
+Create a new view for Place objects that handles all default RESTFul API actions.
+File: api/v1/views/places.py
+Utilize to_dict() to retrieve an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+Retrieves the list of all Place objects of a City: GET /api/v1/cities/<city_id>/places
+`Retrieves a Place object`: GET /api/v1/places/<place_id>
+`Deletes a Place object`: DELETE /api/v1/places/<place_id>
+`Creates a Place`: POST /api/v1/cities/<city_id>/places
+`Updates a Place object`: PUT /api/v1/places/<place_id>
+### 11. Reviews
+Create a new view for Review objects that handles all default RESTFul API actions.
+File: api/v1/views/places_reviews.py
+Utilize to_dict() to retrieve an object into valid JSON.
+Update api/v1/views/__init__.py to import the new file.
+`Retrieves the list of all Review objects of a Place`: GET /api/v1/places/<place_id>/reviews
+`Retrieves a Review object`: GET /api/v1/reviews/<review_id>
+`Deletes a Review object`: DELETE /api/v1/reviews/<review_id>
+`Creates a Review`: POST /api/v1/places/<place_id>/reviews
+
+### 12. HTTP Access Control (CORS)
+Implement CORS (Cross-Origin Resource Sharing) in your Flask API. It's needed to allow web clients from different domains to access your API securely.
+
+### 13. Place - Amenity
+Create a new view to manage the connection between Place and Amenity objects. This view will handle adding, removing, and listing amenities associated with places.
+
+### 14. Security Improvements!
+Enhance security by encrypting user passwords (MD5 hashing) instead of storing them in plaintext. This ensures better protection against unauthorized access.
+
+### 15. Search
+Expand the search functionality of your API. Introduce a new endpoint to search for Place objects based on specified criteria like State, City, and Amenity IDs.
 
 
 ## Bugs
