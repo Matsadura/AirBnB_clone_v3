@@ -125,7 +125,7 @@ def places_search():
                 [amenity in place.amenities
                  for amenity in amenities_obj])]
 
-    places = set()
+    places = []
     for pl in list_places:
         d = pl.to_dict()
         d.pop('amenities', None)
